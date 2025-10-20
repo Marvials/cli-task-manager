@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
+	_ "github.com/Marvials/cli-task-manager/cmd/table"
+
 	"github.com/Marvials/cli-task-manager/internal/database"
 	"github.com/joho/godotenv"
 )
