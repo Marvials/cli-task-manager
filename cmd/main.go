@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/database"
 	"github.com/joho/godotenv"
 )
@@ -20,4 +21,5 @@ func main() {
 	}
 	fmt.Println("Connection was established successfully: ", db)
 
+	root.Execute()
 }
