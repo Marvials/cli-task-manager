@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	_ "github.com/Marvials/cli-task-manager/cmd/add"
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	_ "github.com/Marvials/cli-task-manager/cmd/table"
 
