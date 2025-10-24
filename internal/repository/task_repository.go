@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/Marvials/cli-task-manager/internal/model"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -42,6 +43,21 @@ func (r *TaskRepository) CreateTaskTable() error {
 
 	ctx := context.Background()
 	_, err := r.db.Exec(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// CreateTask adds a task to the tasks table in the database
+func (r *TaskRepository) CreateTask(task model.Task) error {
+	query := `
+		INSERT INTO tasks (description, status, created_at) VALUES ($1, $2, $3) RETURNING ID
+	`
+
+	var id int
+	err := r.db.QueryRow(context.Background(), query, task.Description, task.Status, task.CreateAt).Scan(&id)
 	if err != nil {
 		return err
 	}

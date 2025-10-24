@@ -1,6 +1,9 @@
 package service
 
 import (
+	"time"
+
+	"github.com/Marvials/cli-task-manager/internal/model"
 	"github.com/Marvials/cli-task-manager/internal/repository"
 )
 
@@ -27,4 +30,20 @@ func (s *TaskService) EnsureTaskTableExists() error {
 	}
 
 	return nil
+}
+
+func (s *TaskService) CreateTask(description string) error {
+	task := model.Task{
+		Description: description,
+		Status:      model.TASK_STATUS_DO,
+		CreateAt:    time.Now(),
+	}
+
+	err := s.Repository.CreateTask(task)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }

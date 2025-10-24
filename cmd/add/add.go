@@ -5,6 +5,9 @@ import (
 	"strings"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
+	"github.com/Marvials/cli-task-manager/internal/database"
+	"github.com/Marvials/cli-task-manager/internal/repository"
+	"github.com/Marvials/cli-task-manager/internal/service"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +23,20 @@ var addCmd = &cobra.Command{
 			log.Fatal("The description cannot be empty")
 		}
 
-		log.Println("The task was created successfully!")
+		db, err := database.Connect()
+		if err != nil {
+			log.Fatal("Failed to connect to the database")
+		}
+
+		repo := repository.NewTaskRepository(db)
+		service := service.TaskService{Repository: repo}
+
+		err = service.CreateTask(args[0])
+		if err != nil {
+			log.Fatal("Error creating the task")
+		}
+
+		log.Println("Task was created successfully!")
 	},
 }
 
