@@ -12,8 +12,9 @@ import (
 )
 
 var addCmd = &cobra.Command{
-	Use:   "add [description]",
-	Short: "Add a task in the database",
+	Use:     "add [description]",
+	Aliases: []string{"Add", "ADD"},
+	Short:   "Add a task in the database",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			log.Fatal("The description is required")
