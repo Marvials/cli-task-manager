@@ -23,9 +23,13 @@ var addCmd = &cobra.Command{
 			log.Fatal("The description cannot be empty")
 		}
 
+		if len(args) > 1 {
+			log.Fatal(`The description must be surrounded with ""`)
+		}
+
 		db, err := database.Connect()
 		if err != nil {
-			log.Fatal("Failed to connect to the database")
+			log.Fatal("Failed to connect to the database: ", err)
 		}
 
 		repo := repository.NewTaskRepository(db)
@@ -33,7 +37,7 @@ var addCmd = &cobra.Command{
 
 		err = service.CreateTask(args[0])
 		if err != nil {
-			log.Fatal("Error creating the task")
+			log.Fatal("Error creating the task: ", err)
 		}
 
 		log.Println("Task was created successfully!")
