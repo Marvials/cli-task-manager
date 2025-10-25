@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/Marvials/cli-task-manager/internal/model"
 	"github.com/jackc/pgx/v5"
@@ -63,4 +64,46 @@ func (r *TaskRepository) CreateTask(task model.Task) error {
 	}
 
 	return nil
+}
+
+// ListTodoTask retriaves tasks with "to do" status from the database
+func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
+	query := `
+		SELECT id, description, status, created_at FROM tasks
+		WHERE status = $1;
+	`
+
+	rows, err := r.db.Query(context.Background(), query, model.TASK_STATUS_DO)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tasks []model.Task
+
+	for rows.Next() {
+		var id uint
+		var description, status string
+		var createAt time.Time
+
+		err := rows.Scan(&id, &description, &status, &createAt)
+		if err != nil {
+			return nil, err
+		}
+
+		task := model.Task{
+			ID:          id,
+			Description: description,
+			Status:      model.TaskStatus(status),
+			CreateAt:    createAt,
+		}
+
+		tasks = append(tasks, task)
+	}
+
+	if rows.Err() != nil {
+		return nil, rows.Err()
+	}
+
+	return tasks, nil
 }

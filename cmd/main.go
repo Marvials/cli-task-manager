@@ -4,6 +4,7 @@ import (
 	"log"
 
 	_ "github.com/Marvials/cli-task-manager/cmd/add"
+	_ "github.com/Marvials/cli-task-manager/cmd/list"
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	_ "github.com/Marvials/cli-task-manager/cmd/table"
 

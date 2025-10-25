@@ -47,3 +47,12 @@ func (s *TaskService) CreateTask(description string) error {
 	return nil
 
 }
+
+func (s *TaskService) ListTask() ([]model.Task, error) {
+	tasks, err := s.Repository.ListTodoTask()
+	if err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
+}
