@@ -42,7 +42,8 @@ var listCmd = &cobra.Command{
 		fmt.Fprintln(w, "ID\tDescription\tStatus\tCreate At")
 
 		for _, task := range tasks {
-			duration := time.Since(task.CreateAt)
+
+			duration := time.Since(task.CreateAt.Local())
 
 			fmt.Fprintf(w, "%d\t%s\t%s\t%s\n", task.ID, task.Description, task.Status, timediff.TimeDiff(time.Now().Add(-1*duration)))
 		}

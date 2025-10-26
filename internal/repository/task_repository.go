@@ -69,7 +69,11 @@ func (r *TaskRepository) CreateTask(task model.Task) error {
 // ListTodoTask retriaves tasks with "to do" status from the database
 func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 	query := `
-		SELECT id, description, status, created_at FROM tasks
+		SELECT id,
+		description,
+		status,
+		created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		FROM tasks
 		WHERE status = $1;
 	`
 
