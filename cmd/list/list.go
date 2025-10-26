@@ -1,6 +1,7 @@
 package list
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -27,6 +28,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal("Failed to connect to the database: ", err)
 		}
+		defer db.Close(context.Background())
 
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
