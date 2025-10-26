@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/Marvials/cli-task-manager/internal/model"
@@ -110,4 +111,53 @@ func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 	}
 
 	return tasks, nil
+}
+
+// GetTaskByID retrieves a task from the database by its ID.
+// It returns the task if found, or an empty Task and an error if not found or if a query error occurs.
+func (r *TaskRepository) GetTaskByID(id uint) (model.Task, error) {
+	query := `
+		SELECT id, description, status, created_at FROM tasks WHERE id = $1
+	`
+
+	row, err := r.db.Query(context.Background(), query, id)
+	if err != nil {
+		return model.Task{}, err
+	}
+	defer row.Close()
+
+	var task model.Task
+
+	if row.Next() {
+		err = row.Scan(&task.ID, &task.Description, &task.Status, &task.CreateAt)
+		if err != nil {
+			return model.Task{}, nil
+		}
+	}
+
+	if row.Err() != nil {
+		return model.Task{}, err
+	}
+
+	return task, nil
+
+}
+
+// UpdateStatus updates the status of a task identified by its ID in the database.
+// Returns an error if the update fails or if no records are affected.
+func (r *TaskRepository) UpdateStatus(id uint, newStatus model.TaskStatus) error {
+	query := `
+		UPDATE tasks SET status = $1 WHERE id = $2;
+	`
+
+	cmdTag, err := r.db.Exec(context.Background(), query, newStatus, id)
+	if err != nil {
+		return err
+	}
+
+	if cmdTag.RowsAffected() == 0 {
+		return errors.New("No records were updated")
+	}
+
+	return nil
 }

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+	"strings"
 	"time"
 
 	"github.com/Marvials/cli-task-manager/internal/model"
@@ -55,4 +57,45 @@ func (s *TaskService) ListTask() ([]model.Task, error) {
 	}
 
 	return tasks, nil
+}
+
+// UpdateStatus validates the input parameters, checks if the task exists,
+// and updates its status in the database. Returns an error if the ID is zero,
+// the status is invalid, or the update operation fails.
+func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
+	if id == 0 {
+		return errors.New("ID cannot be zero")
+	}
+
+	if !(strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DO)) ||
+		strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DOING)) ||
+		strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DONE))) {
+		return errors.New("Status does not exist, please use one of: To do, doing, done.")
+	}
+
+	task, err := s.Repository.GetTaskByID(id)
+	if err != nil {
+		return err
+	}
+
+	if task == (model.Task{}) {
+		return errors.New("No task exists with this ID")
+	}
+
+	var newStatusFormated model.TaskStatus
+
+	if strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DO)) {
+		newStatusFormated = model.TASK_STATUS_DO
+	} else if strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DOING)) {
+		newStatusFormated = model.TASK_STATUS_DOING
+	} else {
+		newStatusFormated = model.TASK_STATUS_DONE
+	}
+
+	err = s.Repository.UpdateStatus(id, newStatusFormated)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

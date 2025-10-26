@@ -39,7 +39,7 @@ var listCmd = &cobra.Command{
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 10, ' ', 0)
 		defer w.Flush()
 
-		fmt.Fprintln(w, "ID\tDescription\tStatus\tCreate At")
+		fmt.Fprintln(w, "ID\tDescription\tStatus\tCreated At")
 
 		for _, task := range tasks {
 
