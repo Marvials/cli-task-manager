@@ -113,6 +113,48 @@ func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 	return tasks, nil
 }
 
+func (r *TaskRepository) ListDoingTasks() ([]model.Task, error) {
+	query := `
+		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		FROM tasks
+		WHERE status = $1;
+	`
+
+	rows, err := r.db.Query(context.Background(), query, model.TASK_STATUS_DOING)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tasks []model.Task
+
+	for rows.Next() {
+		var id uint
+		var description, status string
+		var createdAt time.Time
+
+		err = rows.Scan(&id, &description, &status, &createdAt)
+		if err != nil {
+			return nil, err
+		}
+
+		task := model.Task{
+			ID:          id,
+			Description: description,
+			Status:      model.TaskStatus(status),
+			CreateAt:    createdAt,
+		}
+
+		tasks = append(tasks, task)
+	}
+
+	if rows.Err() != nil {
+		return nil, rows.Err()
+	}
+
+	return tasks, nil
+}
+
 // GetTaskByID retrieves a task from the database by its ID.
 // It returns the task if found, or an empty Task and an error if not found or if a query error occurs.
 func (r *TaskRepository) GetTaskByID(id uint) (model.Task, error) {
