@@ -32,6 +32,10 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal("Failed to get the value of flag done: ", err)
 		}
+		listAllTasks, err := cmd.Flags().GetBool("all")
+		if err != nil {
+			log.Fatal("Failed to get the value of flag all: ", err)
+		}
 
 		db, err := database.Connect()
 		if err != nil {
@@ -42,7 +46,7 @@ var listCmd = &cobra.Command{
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
 
-		tasks, err := service.ListTasks(listDoingTasks, listDoneTasks)
+		tasks, err := service.ListTasks(listDoingTasks, listDoneTasks, listAllTasks)
 		if err != nil {
 			log.Fatal("Failed to list the task: ", err)
 		}
@@ -65,5 +69,7 @@ var listCmd = &cobra.Command{
 func init() {
 	listCmd.Flags().Bool("done", false, "List all tasks with status in done")
 	listCmd.Flags().Bool("doing", false, "List all tasks with status in doing")
+	listCmd.Flags().Bool("all", false, "List all tasks")
+
 	root.AddSubCommand(listCmd)
 }
