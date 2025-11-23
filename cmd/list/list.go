@@ -71,5 +71,7 @@ func init() {
 	listCmd.Flags().Bool("doing", false, "List all tasks with status in doing")
 	listCmd.Flags().Bool("all", false, "List all tasks")
 
+	listCmd.MarkFlagsMutuallyExclusive("done", "doing", "all")
+
 	root.AddSubCommand(listCmd)
 }
