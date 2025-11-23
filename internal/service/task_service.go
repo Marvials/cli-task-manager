@@ -109,3 +109,22 @@ func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
 
 	return nil
 }
+
+// GetTask retrieves a specific task by its unique identifier (ID).
+// It perfoms a validation to ensure the ID is non-zero before querying the repository.
+func (s *TaskService) GetTask(id uint) (model.Task, error) {
+	if id == 0 {
+		return model.Task{}, errors.New("ID cannot be zero")
+	}
+
+	task, err := s.Repository.GetTaskByID(id)
+	if err != nil {
+		return model.Task{}, err
+	}
+
+	if task == (model.Task{}) {
+		return model.Task{}, errors.New("No task exits with this ID")
+	}
+
+	return task, nil
+}

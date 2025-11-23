@@ -204,7 +204,9 @@ func (r *TaskRepository) ListDoneTasks() ([]model.Task, error) {
 // It returns the task if found, or an empty Task and an error if not found or if a query error occurs.
 func (r *TaskRepository) GetTaskByID(id uint) (model.Task, error) {
 	query := `
-		SELECT id, description, status, created_at FROM tasks WHERE id = $1
+		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		FROM tasks
+		WHERE id = $1
 	`
 
 	row, err := r.db.Query(context.Background(), query, id)
