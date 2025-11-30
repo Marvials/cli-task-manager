@@ -19,6 +19,8 @@ var tableCmd = &cobra.Command{
 			log.Fatal("This command takes no arguments")
 		}
 
+		ctx := cmd.Context()
+
 		db, err := database.Connect()
 		if err != nil {
 			log.Fatal("Error connecting to the database: ", err)
@@ -27,8 +29,6 @@ var tableCmd = &cobra.Command{
 
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
-
-		ctx := cmd.Context()
 
 		err = service.EnsureTaskTableExists(ctx)
 		if err != nil {
