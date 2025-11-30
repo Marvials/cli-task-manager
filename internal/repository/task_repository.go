@@ -113,6 +113,9 @@ func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 	return tasks, nil
 }
 
+// ListDoingTasks retrieves all tasks currently in the "DOING" status from the database.
+// It returns a slice of tasks with their creation time adjusted to the 'America/Sao_Paulo' timezone,
+// or an error if the query fails.
 func (r *TaskRepository) ListDoingTasks() ([]model.Task, error) {
 	query := `
 		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
