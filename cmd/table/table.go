@@ -28,7 +28,9 @@ var tableCmd = &cobra.Command{
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
 
-		err = service.EnsureTaskTableExists()
+		ctx := cmd.Context()
+
+		err = service.EnsureTaskTableExists(ctx)
 		if err != nil {
 			log.Fatal("Error creating the task table: ", err)
 		}

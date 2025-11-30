@@ -21,11 +21,11 @@ func NewTaskRepository(conn *pgx.Conn) *TaskRepository {
 
 // CheckIfTaskTableExists verifies whether the tasks table exists in the database.
 // It returns true if the table exists, otherwise false.
-func (r *TaskRepository) CheckIfTaskTableExists() (bool, error) {
+func (r *TaskRepository) CheckIfTaskTableExists(ctx context.Context) (bool, error) {
 	query := `SELECT to_regclass('public.tasks') IS NOT NULL;`
 
 	var existsTable bool
-	if err := r.db.QueryRow(context.Background(), query).Scan(&existsTable); err != nil {
+	if err := r.db.QueryRow(ctx, query).Scan(&existsTable); err != nil {
 		return false, err
 	}
 
@@ -33,7 +33,7 @@ func (r *TaskRepository) CheckIfTaskTableExists() (bool, error) {
 }
 
 // CreateTaskTable creates the tasks table in the database if it does not already exist.
-func (r *TaskRepository) CreateTaskTable() error {
+func (r *TaskRepository) CreateTaskTable(ctx context.Context) error {
 	query := `
 		CREATE TABLE IF NOT EXISTS tasks (
 			id SERIAL PRIMARY KEY,
@@ -43,7 +43,6 @@ func (r *TaskRepository) CreateTaskTable() error {
 		);
 	`
 
-	ctx := context.Background()
 	_, err := r.db.Exec(ctx, query)
 	if err != nil {
 		return err

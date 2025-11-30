@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"strings"
 	"time"
@@ -15,9 +16,9 @@ type TaskService struct {
 
 // EnsureTaskTableExists verifies whether the task table exists in the database.
 // If the table does not exist, it creates it. Returns an error if any operation fails.
-func (s *TaskService) EnsureTaskTableExists() error {
+func (s *TaskService) EnsureTaskTableExists(ctx context.Context) error {
 
-	existsTable, err := s.Repository.CheckIfTaskTableExists()
+	existsTable, err := s.Repository.CheckIfTaskTableExists(ctx)
 	if err != nil {
 		return err
 	}
@@ -26,7 +27,7 @@ func (s *TaskService) EnsureTaskTableExists() error {
 		return nil
 	}
 
-	err = s.Repository.CreateTaskTable()
+	err = s.Repository.CreateTaskTable(ctx)
 	if err != nil {
 		return err
 	}
