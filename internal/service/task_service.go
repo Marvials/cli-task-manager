@@ -116,7 +116,7 @@ func (s *TaskService) GetTask(id uint) (model.Task, error) {
 	}
 
 	if task == (model.Task{}) {
-		return model.Task{}, errors.New("No task exits with this ID")
+		return model.Task{}, errors.New("no task exits with this ID")
 	}
 
 	return task, nil
