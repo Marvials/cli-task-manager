@@ -82,16 +82,7 @@ func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
 	if !(strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DO)) ||
 		strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DOING)) ||
 		strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DONE))) {
-		return errors.New("Status does not exist, please use one of: To do, doing, done.")
-	}
-
-	task, err := s.Repository.GetTaskByID(id)
-	if err != nil {
-		return err
-	}
-
-	if task == (model.Task{}) {
-		return errors.New("No task exists with this ID")
+		return errors.New("status does not exist, please use one of: To do, doing or done")
 	}
 
 	var newStatusFormatted model.TaskStatus
@@ -104,7 +95,7 @@ func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
 		newStatusFormatted = model.TASK_STATUS_DONE
 	}
 
-	err = s.Repository.UpdateStatus(id, newStatusFormatted)
+	err := s.Repository.UpdateStatus(id, newStatusFormatted)
 	if err != nil {
 		return err
 	}
