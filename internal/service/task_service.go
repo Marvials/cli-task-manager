@@ -34,6 +34,9 @@ func (s *TaskService) EnsureTaskTableExists() error {
 	return nil
 }
 
+// CreateTask creates a new task with the provided description.
+// It initialize the task with a default status and the current timestamp,
+// then persists it to the repository.
 func (s *TaskService) CreateTask(description string) error {
 	task := model.Task{
 		Description: description,
