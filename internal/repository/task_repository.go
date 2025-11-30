@@ -67,7 +67,7 @@ func (r *TaskRepository) CreateTask(task model.Task) error {
 	return nil
 }
 
-// ListTodoTask retriaves tasks with "to do" status from the database
+// ListTodoTask retrieves tasks with "to do" status from the database
 func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 	query := `
 		SELECT id,
