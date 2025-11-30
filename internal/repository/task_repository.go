@@ -290,7 +290,7 @@ func (r *TaskRepository) UpdateStatus(id uint, newStatus model.TaskStatus) error
 	}
 
 	if cmdTag.RowsAffected() == 0 {
-		return errors.New("No records were updated")
+		return errors.New("no records were updated")
 	}
 
 	return nil
@@ -311,7 +311,7 @@ func (r *TaskRepository) DeleteTask(ID uint) error {
 	}
 
 	if cmdTag.RowsAffected() == 0 {
-		return errors.New("No records were deleted")
+		return errors.New("no records were deleted")
 	}
 
 	return nil
