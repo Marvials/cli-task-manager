@@ -94,17 +94,17 @@ func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
 		return errors.New("No task exists with this ID")
 	}
 
-	var newStatusFormated model.TaskStatus
+	var newStatusFormatted model.TaskStatus
 
 	if strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DO)) {
-		newStatusFormated = model.TASK_STATUS_DO
+		newStatusFormatted = model.TASK_STATUS_DO
 	} else if strings.EqualFold(string(newStatus), string(model.TASK_STATUS_DOING)) {
-		newStatusFormated = model.TASK_STATUS_DOING
+		newStatusFormatted = model.TASK_STATUS_DOING
 	} else {
-		newStatusFormated = model.TASK_STATUS_DONE
+		newStatusFormatted = model.TASK_STATUS_DONE
 	}
 
-	err = s.Repository.UpdateStatus(id, newStatusFormated)
+	err = s.Repository.UpdateStatus(id, newStatusFormatted)
 	if err != nil {
 		return err
 	}
@@ -113,7 +113,7 @@ func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
 }
 
 // GetTask retrieves a specific task by its unique identifier (ID).
-// It perfoms a validation to ensure the ID is non-zero before querying the repository.
+// It performs a validation to ensure the ID is non-zero before querying the repository.
 func (s *TaskService) GetTask(id uint) (model.Task, error) {
 	if id == 0 {
 		return model.Task{}, errors.New("ID cannot be zero")
@@ -129,4 +129,18 @@ func (s *TaskService) GetTask(id uint) (model.Task, error) {
 	}
 
 	return task, nil
+}
+
+func (s *TaskService) DeleteTask(id uint) error {
+	if id == 0 {
+		return errors.New("ID cannot be zero")
+	}
+
+	err := s.Repository.DeleteTask(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }

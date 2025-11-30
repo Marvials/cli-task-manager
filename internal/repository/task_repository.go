@@ -292,3 +292,24 @@ func (r *TaskRepository) UpdateStatus(id uint, newStatus model.TaskStatus) error
 
 	return nil
 }
+
+// DeleteTask removes a task from the database identified by its ID.
+//
+// It returns an error if the database operation fails or if no record was
+// found to be deleted.
+func (r *TaskRepository) DeleteTask(ID uint) error {
+	query := `
+		DELETE FROM tasks WHERE ID = $1
+	`
+
+	cmdTag, err := r.db.Exec(context.Background(), query, ID)
+	if err != nil {
+		return err
+	}
+
+	if cmdTag.RowsAffected() == 0 {
+		return errors.New("No records were deleted")
+	}
+
+	return nil
+}

@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/Marvials/cli-task-manager/cmd/add"
 	_ "github.com/Marvials/cli-task-manager/cmd/change"
+	_ "github.com/Marvials/cli-task-manager/cmd/delete"
 	_ "github.com/Marvials/cli-task-manager/cmd/get"
 	_ "github.com/Marvials/cli-task-manager/cmd/list"
 	"github.com/Marvials/cli-task-manager/cmd/root"
