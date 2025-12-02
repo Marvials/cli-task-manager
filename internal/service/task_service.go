@@ -78,7 +78,7 @@ func (s *TaskService) ListTasks(listDoingTasks, listDoneTasks, listAllTasks bool
 // UpdateStatus validates the input parameters, checks if the task exists,
 // and updates its status in the database. Returns an error if the ID is zero,
 // the status is invalid, or the update operation fails.
-func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
+func (s *TaskService) UpdateStatus(ctx context.Context, id uint, newStatus model.TaskStatus) error {
 	if id == 0 {
 		return errors.New("ID cannot be zero")
 	}
@@ -99,7 +99,7 @@ func (s *TaskService) UpdateStatus(id uint, newStatus model.TaskStatus) error {
 		newStatusFormatted = model.TASK_STATUS_DONE
 	}
 
-	err := s.Repository.UpdateStatus(id, newStatusFormatted)
+	err := s.Repository.UpdateStatus(ctx, id, newStatusFormatted)
 	if err != nil {
 		return err
 	}

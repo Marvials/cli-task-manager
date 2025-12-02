@@ -27,6 +27,8 @@ var changeStatusCmd = &cobra.Command{
 			log.Fatal("The new status cannot be empty")
 		}
 
+		ctx := cmd.Context()
+
 		db, err := database.Connect()
 		if err != nil {
 			log.Fatal("Failed to connect to the database: ", err)
@@ -41,7 +43,7 @@ var changeStatusCmd = &cobra.Command{
 			log.Fatal("Failed to convert string to int: ", err)
 		}
 
-		err = service.UpdateStatus(uint(id), model.TaskStatus(args[1]))
+		err = service.UpdateStatus(ctx, uint(id), model.TaskStatus(args[1]))
 		if err != nil {
 			log.Fatal("Failed to update task status: ", err)
 		}

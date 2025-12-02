@@ -278,12 +278,12 @@ func (r *TaskRepository) GetTaskByID(id uint) (model.Task, error) {
 
 // UpdateStatus updates the status of a task identified by its ID in the database.
 // Returns an error if the update fails or if no records are affected.
-func (r *TaskRepository) UpdateStatus(id uint, newStatus model.TaskStatus) error {
+func (r *TaskRepository) UpdateStatus(ctx context.Context, id uint, newStatus model.TaskStatus) error {
 	query := `
 		UPDATE tasks SET status = $1 WHERE id = $2;
 	`
 
-	cmdTag, err := r.db.Exec(context.Background(), query, newStatus, id)
+	cmdTag, err := r.db.Exec(ctx, query, newStatus, id)
 	if err != nil {
 		return err
 	}
