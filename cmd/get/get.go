@@ -31,6 +31,8 @@ var getCmd = &cobra.Command{
 			log.Fatal("Invalid ID format. ID must be an integer")
 		}
 
+		ctx := cmd.Context()
+
 		db, err := database.Connect()
 		if err != nil {
 			log.Fatal(err)
@@ -40,7 +42,7 @@ var getCmd = &cobra.Command{
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
 
-		task, err := service.GetTask(uint(id))
+		task, err := service.GetTask(ctx, uint(id))
 		if err != nil {
 			log.Fatal(err)
 		}

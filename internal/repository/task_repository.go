@@ -246,7 +246,7 @@ func (r *TaskRepository) ListAllTasks() ([]model.Task, error) {
 
 // GetTaskByID retrieves a task from the database by its ID.
 // It returns the task if found, or an empty Task and an error if not found or if a query error occurs.
-func (r *TaskRepository) GetTaskByID(id uint) (model.Task, error) {
+func (r *TaskRepository) GetTaskByID(ctx context.Context, id uint) (model.Task, error) {
 	query := `
 		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
 		FROM tasks
