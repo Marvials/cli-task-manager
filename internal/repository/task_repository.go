@@ -299,7 +299,7 @@ func (r *TaskRepository) UpdateStatus(ctx context.Context, id uint, newStatus mo
 //
 // It returns an error if the database operation fails or if no record was
 // found to be deleted.
-func (r *TaskRepository) DeleteTask(ID uint) error {
+func (r *TaskRepository) DeleteTask(ctx context.Context, ID uint) error {
 	query := `
 		DELETE FROM tasks WHERE ID = $1
 	`

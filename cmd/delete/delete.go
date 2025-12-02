@@ -23,6 +23,8 @@ var deleteCmd = &cobra.Command{
 			log.Fatal("Task id must be a number")
 		}
 
+		ctx := cmd.Context()
+
 		db, err := database.Connect()
 		if err != nil {
 			log.Fatal("Failed to connect to the database: ", err)
@@ -31,7 +33,7 @@ var deleteCmd = &cobra.Command{
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
 
-		err = service.DeleteTask(uint(id))
+		err = service.DeleteTask(ctx, uint(id))
 		if err != nil {
 			log.Fatal("Failed to delete the task: ", err)
 		}

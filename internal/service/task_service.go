@@ -127,12 +127,12 @@ func (s *TaskService) GetTask(id uint) (model.Task, error) {
 }
 
 // DeleteTask removes a task from the database by its ID.
-func (s *TaskService) DeleteTask(id uint) error {
+func (s *TaskService) DeleteTask(ctx context.Context, id uint) error {
 	if id == 0 {
 		return errors.New("ID cannot be zero")
 	}
 
-	err := s.Repository.DeleteTask(id)
+	err := s.Repository.DeleteTask(ctx, id)
 	if err != nil {
 		return err
 	}
