@@ -52,13 +52,13 @@ func (r *TaskRepository) CreateTaskTable(ctx context.Context) error {
 }
 
 // CreateTask adds a task to the tasks table in the database
-func (r *TaskRepository) CreateTask(task model.Task) error {
+func (r *TaskRepository) CreateTask(ctx context.Context, task model.Task) error {
 	query := `
 		INSERT INTO tasks (description, status, created_at) VALUES ($1, $2, $3) RETURNING ID
 	`
 
 	var id int
-	err := r.db.QueryRow(context.Background(), query, task.Description, task.Status, task.CreateAt).Scan(&id)
+	err := r.db.QueryRow(ctx, query, task.Description, task.Status, task.CreateAt).Scan(&id)
 	if err != nil {
 		return err
 	}

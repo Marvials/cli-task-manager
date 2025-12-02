@@ -38,14 +38,14 @@ func (s *TaskService) EnsureTaskTableExists(ctx context.Context) error {
 // CreateTask creates a new task with the provided description.
 // It initialize the task with a default status and the current timestamp,
 // then persists it to the repository.
-func (s *TaskService) CreateTask(description string) error {
+func (s *TaskService) CreateTask(ctx context.Context, description string) error {
 	task := model.Task{
 		Description: description,
 		Status:      model.TASK_STATUS_DO,
 		CreateAt:    time.Now(),
 	}
 
-	err := s.Repository.CreateTask(task)
+	err := s.Repository.CreateTask(ctx, task)
 	if err != nil {
 		return err
 	}
