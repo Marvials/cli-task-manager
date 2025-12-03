@@ -8,7 +8,6 @@ import (
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/database"
-	"github.com/Marvials/cli-task-manager/internal/model"
 	"github.com/Marvials/cli-task-manager/internal/repository"
 	"github.com/Marvials/cli-task-manager/internal/service"
 	"github.com/spf13/cobra"
@@ -43,7 +42,7 @@ var changeStatusCmd = &cobra.Command{
 			log.Fatal("Failed to convert string to int: ", err)
 		}
 
-		err = service.UpdateStatus(ctx, uint(id), model.TaskStatus(args[1]))
+		err = service.UpdateStatus(ctx, uint(id), args[1])
 		if err != nil {
 			log.Fatal("Failed to update task status: ", err)
 		}
