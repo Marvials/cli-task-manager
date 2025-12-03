@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 
 	_ "github.com/Marvials/cli-task-manager/cmd/add"
 	_ "github.com/Marvials/cli-task-manager/cmd/change"
@@ -15,9 +17,16 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatal("Error to load the .env file: ", err)
+		log.Fatal("Could not find user directory: ", err)
+	}
+
+	envPath := filepath.Join(homeDir, "env/.task-manager.env")
+
+	err = godotenv.Load(envPath)
+	if err != nil {
+		log.Fatal("Error loading the .env file ", err)
 	}
 
 	root.Execute()
