@@ -55,18 +55,18 @@ func (s *TaskService) CreateTask(ctx context.Context, description string) error 
 }
 
 // ListTasks returns tasks filtered by status.
-func (s *TaskService) ListTasks(listDoingTasks, listDoneTasks, listAllTasks bool) ([]model.Task, error) {
+func (s *TaskService) ListTasks(ctx context.Context, listDoingTasks, listDoneTasks, listAllTasks bool) ([]model.Task, error) {
 	var err error
 	var tasks []model.Task
 
 	if listDoingTasks {
-		tasks, err = s.Repository.ListDoingTasks()
+		tasks, err = s.Repository.ListDoingTasks(ctx)
 	} else if listDoneTasks {
-		tasks, err = s.Repository.ListDoneTasks()
+		tasks, err = s.Repository.ListDoneTasks(ctx)
 	} else if listAllTasks {
-		tasks, err = s.Repository.ListAllTasks()
+		tasks, err = s.Repository.ListAllTasks(ctx)
 	} else {
-		tasks, err = s.Repository.ListTodoTask()
+		tasks, err = s.Repository.ListTodoTask(ctx)
 	}
 	if err != nil {
 		return nil, err

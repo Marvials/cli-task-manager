@@ -67,7 +67,7 @@ func (r *TaskRepository) CreateTask(ctx context.Context, task model.Task) error 
 }
 
 // ListTodoTask retrieves tasks with "to do" status from the database
-func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
+func (r *TaskRepository) ListTodoTask(ctx context.Context) ([]model.Task, error) {
 	query := `
 		SELECT id,
 		description,
@@ -77,7 +77,7 @@ func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 		WHERE status = $1;
 	`
 
-	rows, err := r.db.Query(context.Background(), query, model.TASK_STATUS_DO)
+	rows, err := r.db.Query(ctx, query, model.TASK_STATUS_DO)
 	if err != nil {
 		return nil, err
 	}
@@ -115,14 +115,14 @@ func (r *TaskRepository) ListTodoTask() ([]model.Task, error) {
 // ListDoingTasks retrieves all tasks currently in the "DOING" status from the database.
 // It returns a slice of tasks with their creation time adjusted to the 'America/Sao_Paulo' timezone,
 // or an error if the query fails.
-func (r *TaskRepository) ListDoingTasks() ([]model.Task, error) {
+func (r *TaskRepository) ListDoingTasks(ctx context.Context) ([]model.Task, error) {
 	query := `
 		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
 		FROM tasks
 		WHERE status = $1;
 	`
 
-	rows, err := r.db.Query(context.Background(), query, model.TASK_STATUS_DOING)
+	rows, err := r.db.Query(ctx, query, model.TASK_STATUS_DOING)
 	if err != nil {
 		return nil, err
 	}
@@ -160,14 +160,14 @@ func (r *TaskRepository) ListDoingTasks() ([]model.Task, error) {
 // ListDoneTasks returns all tasks with status DONE.
 // Executes a query in the database filtering by status, scans each row,
 // and builds a slice of model.Task for return.
-func (r *TaskRepository) ListDoneTasks() ([]model.Task, error) {
+func (r *TaskRepository) ListDoneTasks(ctx context.Context) ([]model.Task, error) {
 	query := `
 		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
 		FROM tasks
 		WHERE status = $1;
 	`
 
-	rows, err := r.db.Query(context.Background(), query, model.TASK_STATUS_DONE)
+	rows, err := r.db.Query(ctx, query, model.TASK_STATUS_DONE)
 	if err != nil {
 		return nil, err
 	}
@@ -203,13 +203,13 @@ func (r *TaskRepository) ListDoneTasks() ([]model.Task, error) {
 }
 
 // ListAllTasks retrieves all tasks from the database.
-func (r *TaskRepository) ListAllTasks() ([]model.Task, error) {
+func (r *TaskRepository) ListAllTasks(ctx context.Context) ([]model.Task, error) {
 	query := `
 		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
 		FROM tasks
 		ORDER BY id
 	`
-	rows, err := r.db.Query(context.Background(), query)
+	rows, err := r.db.Query(ctx, query)
 	if err != nil {
 		return nil, err
 	}

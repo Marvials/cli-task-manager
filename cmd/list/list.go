@@ -37,6 +37,8 @@ var listCmd = &cobra.Command{
 			log.Fatal("Failed to get the value of flag all: ", err)
 		}
 
+		ctx := cmd.Context()
+
 		db, err := database.Connect()
 		if err != nil {
 			log.Fatal("Failed to connect to the database: ", err)
@@ -46,7 +48,7 @@ var listCmd = &cobra.Command{
 		repo := repository.NewTaskRepository(db)
 		service := service.TaskService{Repository: repo}
 
-		tasks, err := service.ListTasks(listDoingTasks, listDoneTasks, listAllTasks)
+		tasks, err := service.ListTasks(ctx, listDoingTasks, listDoneTasks, listAllTasks)
 		if err != nil {
 			log.Fatal("Failed to list the task: ", err)
 		}
