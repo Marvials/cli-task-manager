@@ -22,7 +22,7 @@ func main() {
 		log.Fatal("Could not find user directory: ", err)
 	}
 
-	envPath := filepath.Join(homeDir, "env/.task-manager.env")
+	envPath := filepath.Join(homeDir, ".config", ".task-manager.env")
 
 	err = godotenv.Load(envPath)
 	if err != nil {
