@@ -15,11 +15,8 @@ var changeStatusCmd = &cobra.Command{
 	Use:     "change-status [id] [new status]",
 	Aliases: []string{"Change-status, CHANGE-STATUS, Change-Status"},
 	Short:   "Change a task's status",
+	Args:    cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 || len(args) == 1 {
-			log.Fatal("Task ID and new status are required")
-		}
-
 		if strings.TrimSpace(args[1]) == "" {
 			log.Fatal("The new status cannot be empty")
 		}
