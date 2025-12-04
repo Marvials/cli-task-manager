@@ -17,11 +17,8 @@ import (
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all task",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) != 0 {
-			log.Fatal("This command takes no arguments")
-		}
-
 		listDoingTasks, err := cmd.Flags().GetBool("doing")
 		if err != nil {
 			log.Fatal("Failed to get the value of flag doing: ", err)
