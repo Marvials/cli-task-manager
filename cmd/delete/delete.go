@@ -6,9 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
-	"github.com/Marvials/cli-task-manager/internal/database"
-	"github.com/Marvials/cli-task-manager/internal/repository"
-	"github.com/Marvials/cli-task-manager/internal/service"
+	"github.com/Marvials/cli-task-manager/internal/factory"
 	"github.com/spf13/cobra"
 )
 
@@ -26,14 +24,11 @@ var deleteCmd = &cobra.Command{
 
 		ctx := cmd.Context()
 
-		db, err := database.Connect()
+		db, service, err := factory.NewTaskService()
 		if err != nil {
-			log.Fatal("Failed to connect to the database: ", err)
+			log.Fatal("Failed to initialize dependencies: ", err)
 		}
 		defer db.Close(context.Background())
-
-		repo := repository.NewTaskRepository(db)
-		service := service.TaskService{Repository: repo}
 
 		err = service.DeleteTask(ctx, uint(id))
 		if err != nil {

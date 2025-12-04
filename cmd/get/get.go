@@ -10,9 +10,7 @@ import (
 	"time"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
-	"github.com/Marvials/cli-task-manager/internal/database"
-	"github.com/Marvials/cli-task-manager/internal/repository"
-	"github.com/Marvials/cli-task-manager/internal/service"
+	"github.com/Marvials/cli-task-manager/internal/factory"
 	"github.com/mergestat/timediff"
 	"github.com/spf13/cobra"
 )
@@ -33,14 +31,11 @@ var getCmd = &cobra.Command{
 
 		ctx := cmd.Context()
 
-		db, err := database.Connect()
+		db, service, err := factory.NewTaskService()
 		if err != nil {
 			log.Fatal(err)
 		}
 		defer db.Close(context.Background())
-
-		repo := repository.NewTaskRepository(db)
-		service := service.TaskService{Repository: repo}
 
 		task, err := service.GetTask(ctx, uint(id))
 		if err != nil {
