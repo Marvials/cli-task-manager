@@ -14,11 +14,8 @@ var addCmd = &cobra.Command{
 	Use:     "add [description]",
 	Aliases: []string{"Add", "ADD"},
 	Short:   "Add a task in the database",
+	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			log.Fatal("The description is required")
-		}
-
 		if strings.TrimSpace(args[0]) == "" {
 			log.Fatal("The description cannot be empty")
 		}
