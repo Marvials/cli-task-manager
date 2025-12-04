@@ -39,7 +39,7 @@ func (r *TaskRepository) CreateTaskTable(ctx context.Context) error {
 			id SERIAL PRIMARY KEY,
 			description VARCHAR(100) NOT NULL,
 			status VARCHAR(5) NOT NULL,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+			created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 		);
 	`
 
@@ -72,7 +72,7 @@ func (r *TaskRepository) ListTodoTask(ctx context.Context) ([]model.Task, error)
 		SELECT id,
 		description,
 		status,
-		created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		created_at
 		FROM tasks
 		WHERE status = $1;
 	`
@@ -117,7 +117,7 @@ func (r *TaskRepository) ListTodoTask(ctx context.Context) ([]model.Task, error)
 // or an error if the query fails.
 func (r *TaskRepository) ListDoingTasks(ctx context.Context) ([]model.Task, error) {
 	query := `
-		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		SELECT id, description, status, created_at
 		FROM tasks
 		WHERE status = $1;
 	`
@@ -162,7 +162,7 @@ func (r *TaskRepository) ListDoingTasks(ctx context.Context) ([]model.Task, erro
 // and builds a slice of model.Task for return.
 func (r *TaskRepository) ListDoneTasks(ctx context.Context) ([]model.Task, error) {
 	query := `
-		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		SELECT id, description, status, created_at
 		FROM tasks
 		WHERE status = $1;
 	`
@@ -205,7 +205,7 @@ func (r *TaskRepository) ListDoneTasks(ctx context.Context) ([]model.Task, error
 // ListAllTasks retrieves all tasks from the database.
 func (r *TaskRepository) ListAllTasks(ctx context.Context) ([]model.Task, error) {
 	query := `
-		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		SELECT id, description, status, created_at
 		FROM tasks
 		ORDER BY id
 	`
@@ -248,7 +248,7 @@ func (r *TaskRepository) ListAllTasks(ctx context.Context) ([]model.Task, error)
 // It returns the task if found, or an empty Task and an error if not found or if a query error occurs.
 func (r *TaskRepository) GetTaskByID(ctx context.Context, id uint) (model.Task, error) {
 	query := `
-		SELECT id, description, status, created_at AT TIME ZONE 'America/Sao_Paulo' AS created_at_local
+		SELECT id, description, status, created_at
 		FROM tasks
 		WHERE id = $1
 	`
