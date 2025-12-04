@@ -14,11 +14,8 @@ import (
 var tableCmd = &cobra.Command{
 	Use:   "tables",
 	Short: "Verify and create tables in the database",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) != 0 {
-			log.Fatal("This command takes no arguments")
-		}
-
 		ctx := cmd.Context()
 
 		db, err := database.Connect()
