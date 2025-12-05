@@ -18,6 +18,7 @@ import (
 var getCmd = &cobra.Command{
 	Use:     "get [id]",
 	Short:   "Get task by ID",
+	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"Get", "GET"},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
