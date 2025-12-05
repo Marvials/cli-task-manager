@@ -13,7 +13,7 @@ import (
 
 var changeStatusCmd = &cobra.Command{
 	Use:     "change-status [id] [new status]",
-	Aliases: []string{"Change-status, CHANGE-STATUS, Change-Status"},
+	Aliases: []string{"change", "update"},
 	Short:   "Change a task's status",
 	Args:    cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
