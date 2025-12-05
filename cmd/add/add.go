@@ -13,8 +13,12 @@ import (
 var addCmd = &cobra.Command{
 	Use:     "add [description]",
 	Aliases: []string{"Add", "ADD"},
-	Short:   "Add a task in the database",
-	Args:    cobra.MinimumNArgs(1),
+	Short:   "Create a new task",
+	Long: `Adds a new task to your 'To Do' list.
+You can type the description as a normal sentence without needing quotes.`,
+	Example: `task add Buy milk
+task add "Review project code"`,
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if strings.TrimSpace(args[0]) == "" {
 			log.Fatal("The description cannot be empty")
