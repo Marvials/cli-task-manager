@@ -21,10 +21,6 @@ var getCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"Get", "GET"},
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1 {
-			log.Fatal("Task ID is required")
-		}
-
 		id, err := strconv.Atoi(args[0])
 		if err != nil {
 			log.Fatal("Invalid ID format. ID must be an integer")
