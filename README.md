@@ -1,7 +1,8 @@
-CLI Task Manager
+# CLI Task Manager
+
 A robust, efficient, and thoroughly architected Command Line Interface (CLI) tool for managing your daily tasks. Built with Golang and backed by PostgreSQL, it leverages modern development patterns to ensure reliability and speed.
 
-🚀 Features
+## 🚀 Features
 Task Management: Create, read, update, and delete tasks directly from your terminal.
 
 Natural Typing: Add tasks using natural sentences without needing quotes (e.g., task add Buy coffee).
@@ -14,7 +15,7 @@ Persistent Storage: Uses PostgreSQL for reliable data persistence.
 
 Clean Architecture: Built using the Factory pattern, separation of concerns (Service/Repository layers), and Dependency Injection.
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 Language: Go (Golang)
 
 Database: PostgreSQL
@@ -25,19 +26,19 @@ Database Driver: pgx
 
 Configuration: godotenv
 
-📋 Prerequisites
+## 📋 Prerequisites
 Before you begin, ensure you have the following installed:
 
 Go (version 1.22+)
 
 PostgreSQL
 
-⚙️ Installation & Setup
+## ⚙️ Installation & Setup
 1. Clone the repository
 ```Bash
 git clone https://github.com/Marvials/cli-task-manager.git
 cd cli-task-manager
-```
+``` 
 
 2. Build the application
 Linux / macOS:
@@ -85,7 +86,7 @@ Run the setup command to create the necessary tables in your database:
 ```Bash
 ./task tables
 ```
-💻 Usage
+## 💻 Usage
 Create a Task
 Add a new task. You don't need quotes for multi-word descriptions.
 
@@ -122,19 +123,5 @@ Permanently remove a task.
 ```Bash
 task delete 1
 ```
-
-🏗️ Project Architecture
-This project follows Clean Architecture principles to ensure maintainability and testability:
-
-cmd/: Contains the CLI entry points (Cobra commands). It handles user input and validates arguments.
-
-internal/factory/: Implements the Factory pattern to initialize database connections and inject dependencies into the Service layer.
-
-internal/service/: Contains the business logic. It validates data (like checking if a status is valid) before passing it to the repository.
-
-internal/repository/: Handles direct SQL interactions with PostgreSQL using pgx.
-
-internal/model/: Defines the data structures and helper methods (like Enum validation).
-
-📄 License
+## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
