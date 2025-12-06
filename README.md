@@ -13,8 +13,6 @@ Timezone Aware: Correctly handles timezones using TIMESTAMPTZ, ensuring task cre
 
 Persistent Storage: Uses PostgreSQL for reliable data persistence.
 
-Clean Architecture: Built using the Factory pattern, separation of concerns (Service/Repository layers), and Dependency Injection.
-
 ## 🛠️ Tech Stack
 Language: Go (Golang)
 
