@@ -9,7 +9,7 @@ Natural Typing: Add tasks using natural sentences without needing quotes (e.g., 
 
 Status Tracking: Filter tasks by status (To do, Doing, Done).
 
-Timezone Aware: Correctly handles timezones using TIMESTAMPTZ, ensuring task creation times are accurate regardless of where you are.
+Timezone Aware: Automatically handles timezones to ensure task creation times are accurate regardless of your location.
 
 Persistent Storage: Uses PostgreSQL for reliable data persistence.
 
