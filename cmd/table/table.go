@@ -11,8 +11,11 @@ import (
 
 var tableCmd = &cobra.Command{
 	Use:   "tables",
-	Short: "Verify and create tables in the database",
-	Args:  cobra.NoArgs,
+	Short: "Initialize database structure",
+	Long: `Checks if the required tables ('tasks') exists in the configured database.
+If not, it automatically creates the table with the correct schema.
+Use this for initial setup.`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := cmd.Context()
 
