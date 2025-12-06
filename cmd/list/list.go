@@ -16,8 +16,15 @@ import (
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List all task",
-	Args:  cobra.NoArgs,
+	Short: "List existing tasks",
+	Long: `Display a table with your tasks.
+By default, it shows only pending ('To do') tasks.
+Use available flags to filter by other statuses`,
+	Example: `task list   # List tasks to do
+task list --doing  #List tasks in progress
+task list --done  #List completed tasks
+task list --all  #List everything`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		listDoingTasks, err := cmd.Flags().GetBool("doing")
 		if err != nil {
