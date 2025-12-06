@@ -11,8 +11,11 @@ import (
 )
 
 var deleteCmd = &cobra.Command{
-	Use:     "delete [id]",
-	Short:   "Delete task by ID",
+	Use:   "delete [id]",
+	Short: "Remove a task permanently",
+	Long: `Deletes a task from the database using its ID.
+WARNING: This action cannot be undone`,
+	Example: "task delete 10",
 	Aliases: []string{"DELETE", "Delete"},
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
