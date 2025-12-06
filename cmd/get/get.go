@@ -16,8 +16,11 @@ import (
 )
 
 var getCmd = &cobra.Command{
-	Use:     "get [id]",
-	Short:   "Get task by ID",
+	Use:   "get [id]",
+	Short: "Show details of a specific task",
+	Long: `Retrieves a task by its unique ID and displays all information,
+including how long aog it was created`,
+	Example: "task get 4",
 	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"Get", "GET"},
 	Run: func(cmd *cobra.Command, args []string) {
