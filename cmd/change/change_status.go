@@ -14,8 +14,15 @@ import (
 var changeStatusCmd = &cobra.Command{
 	Use:     "change-status [id] [new status]",
 	Aliases: []string{"change", "update"},
-	Short:   "Change a task's status",
-	Args:    cobra.ExactArgs(2),
+	Short:   "Update a task's status",
+	Long: `Changes the status of an existing task based on its ID.
+Accepted statures are:
+- To do
+- Doing
+- Done`,
+	Example: `task change 1 Doing
+task update 5 done`,
+	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		if strings.TrimSpace(args[1]) == "" {
 			log.Fatal("The new status cannot be empty")
