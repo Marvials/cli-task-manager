@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
-	"text/tabwriter"
 	"time"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/factory"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss/table"
 	"github.com/mergestat/timediff"
 	"github.com/spf13/cobra"
 )
@@ -52,17 +52,41 @@ task list --all  #List everything`,
 			log.Fatal("Failed to list the task: ", err)
 		}
 
-		w := tabwriter.NewWriter(os.Stdout, 0, 0, 10, ' ', 0)
-		defer w.Flush()
+		var (
+			blue = lipgloss.Color("#3462FA")
+			gray = lipgloss.Color("245")
+			lightGray = lipgloss.Color("241")
 
-		fmt.Fprintln(w, "ID\tDescription\tStatus\tCreated At")
+			headerStyle = lipgloss.NewStyle().Foreground(blue).Bold(true).Align(lipgloss.Center)
+			cellStyle = lipgloss.NewStyle().Padding(0, 1).Width(30)
+			oddRowStyle = cellStyle.Foreground(gray)
+			evenRowStyle = cellStyle.Foreground(lightGray)
+		)
+
+
+		t := table.New().
+			Border(lipgloss.NormalBorder()).
+			BorderStyle(lipgloss.NewStyle().Foreground(blue)).
+			StyleFunc(func(row, col int) lipgloss.Style {
+				switch {
+				case row == table.HeaderRow:
+					return headerStyle
+				case row%2 == 0:
+					return evenRowStyle
+				default:
+					return oddRowStyle
+				}
+			}).Headers("ID", "DESCRIPTION", "STATUS", "CREATED AT")
 
 		for _, task := range tasks {
-
 			duration := time.Since(task.CreateAt.Local())
+			timediff := timediff.TimeDiff(time.Now().Add(-1 * duration))
+			IDString := fmt.Sprint(task.ID)
 
-			fmt.Fprintf(w, "%d\t%s\t%s\t%s\n", task.ID, task.Description, task.Status, timediff.TimeDiff(time.Now().Add(-1*duration)))
+			t.Row(IDString, task.Description, string(task.Status), timediff)
 		}
+
+		fmt.Println(t)
 
 	},
 }
