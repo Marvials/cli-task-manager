@@ -2,11 +2,14 @@ package add
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/factory"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
@@ -20,8 +23,10 @@ You can type the description as a normal sentence without needing quotes.`,
 task add "Review project code"`,
 	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		var style = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FB191E"))
 		if strings.TrimSpace(args[0]) == "" {
-			log.Fatal("The description cannot be empty")
+			fmt.Println(style.Render("The description cannot be empty"))
+			os.Exit(1)
 		}
 
 		description := strings.Join(args, " ")
@@ -39,7 +44,9 @@ task add "Review project code"`,
 			log.Fatal("Error creating the task: ", err)
 		}
 
-		log.Println("Task was created successfully!")
+		style = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#3EF723"))
+
+		fmt.Println(style.Render("Task was created successfully!"))
 	},
 }
 
