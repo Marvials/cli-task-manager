@@ -2,11 +2,14 @@ package delete
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/factory"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
@@ -19,10 +22,12 @@ WARNING: This action cannot be undone`,
 	Aliases: []string{"DELETE", "Delete"},
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		style := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FB191E"))
 
 		id, err := strconv.Atoi(args[0])
 		if err != nil {
-			log.Fatal("Task id must be a number")
+			fmt.Println(style.Render("Task id must be a number"))
+			os.Exit(1)
 		}
 
 		ctx := cmd.Context()
@@ -37,6 +42,9 @@ WARNING: This action cannot be undone`,
 		if err != nil {
 			log.Fatal("Failed to delete the task: ", err)
 		}
+
+		style = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#3EF723"))
+		fmt.Println(style.Render("Task deleted successfully!"))
 	},
 }
 
