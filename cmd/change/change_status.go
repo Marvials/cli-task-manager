@@ -2,12 +2,15 @@ package change
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
+	"os"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/factory"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
@@ -24,8 +27,11 @@ Accepted statures are:
 task update 5 done`,
 	Args: cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
+		style := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FB191E"))
+
 		if strings.TrimSpace(args[1]) == "" {
-			log.Fatal("The new status cannot be empty")
+			fmt.Println(style.Render("The new status cannot be empty"))
+			os.Exit(1)
 		}
 
 		ctx := cmd.Context()
@@ -46,8 +52,9 @@ task update 5 done`,
 			log.Fatal("Failed to update task status: ", err)
 		}
 
-		log.Println("Task status updated successfully")
+		style = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#3EF723"))
 
+		fmt.Println(style.Render("Task status updated successfully!"))
 	},
 }
 
