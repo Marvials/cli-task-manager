@@ -6,11 +6,12 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"text/tabwriter"
 	"time"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/factory"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss/table"
 	"github.com/mergestat/timediff"
 	"github.com/spf13/cobra"
 )
@@ -24,9 +25,12 @@ including how long aog it was created`,
 	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"Get", "GET"},
 	Run: func(cmd *cobra.Command, args []string) {
+		style := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FB191E"))
+
 		id, err := strconv.Atoi(args[0])
 		if err != nil {
-			log.Fatal("Invalid ID format. ID must be an integer")
+			fmt.Println(style.Render("Invalid ID format. ID must be an integer"))
+			os.Exit(1)
 		}
 
 		ctx := cmd.Context()
@@ -42,14 +46,34 @@ including how long aog it was created`,
 			log.Fatal(err)
 		}
 
-		w := tabwriter.NewWriter(os.Stdout, 0, 0, 10, ' ', 0)
-		defer w.Flush()
+		var (
+			blue      = lipgloss.Color("#3462FA")
+			lightGray = lipgloss.Color("#7B7F84")
 
-		fmt.Fprintln(w, "ID\tDescription\tStatus\tCreated At")
+			headerStyle  = lipgloss.NewStyle().Foreground(blue).Bold(true).Align(lipgloss.Center)
+			cellStyle    = lipgloss.NewStyle().Padding(0, 1).Width(30)
+			rowStyle = cellStyle.Foreground(lightGray)
+		)
+
+		t := table.New().
+			Border(lipgloss.NormalBorder()).
+			BorderStyle(lipgloss.NewStyle().Foreground(blue)).
+			StyleFunc(func(row, col int) lipgloss.Style {
+				switch row {
+				case table.HeaderRow:
+					return headerStyle
+				default:
+					return rowStyle
+				}
+			}).Headers("ID", "DESCRIPTION", "STATUS", "CREATED AT")
 
 		duration := time.Since(task.CreateAt.Local())
-		fmt.Fprintf(w, "%d\t%s\t%s\t%s\n", task.ID, task.Description, task.Status, timediff.TimeDiff(time.Now().Add(-1*duration)))
+		timediff := timediff.TimeDiff(time.Now().Add(-1 * duration))
+		IDString := fmt.Sprint(task.ID)
 
+		t.Row(IDString, task.Description, string(task.Status), timediff)
+
+		fmt.Println(t)
 	},
 }
 
