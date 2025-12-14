@@ -2,10 +2,12 @@ package table
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/Marvials/cli-task-manager/cmd/root"
 	"github.com/Marvials/cli-task-manager/internal/factory"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +32,9 @@ Use this for initial setup.`,
 			log.Fatal("Error creating the task table: ", err)
 		}
 
-		log.Println("Task table created successfully")
+		style := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#3EF723"))
+
+		fmt.Println(style.Render("Task table created successfully"))
 	},
 }
 
